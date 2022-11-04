@@ -15,7 +15,7 @@ from rest_framework.response import Response
 openai.api_key = config("OPEN_API_KEY")
 
 # Create your views here.
-@api_view()
+# @api_view()
 def index(request):
     data = {
         "slackUsername": "MichaelUtoh",
@@ -23,10 +23,10 @@ def index(request):
         "age": 30,
         "bio": "I am a backend developer based in Lagos, Nigeria. I love building REST APIs using Python"
     }
-    return Response(data)
+    return JsonResponse(data)
 
 
-@api_view(['post'])
+# @api_view(['post'])
 def calc(request):
     data = json.loads(request.body)
     operation_type = data["operation_type"].lower()
@@ -58,13 +58,13 @@ def calc(request):
             presence_penalty=0.0
         ).choices[0].text.strip()
 
-        return Response({
+        return JsonResponse({
             "slackUsername": "MichaelUtoh",
             "result": int(response1),
             "operation_type": response2,
         })
 
-    return Response({
+    return JsonResponse({
         "slackUsername": "MichaelUtoh",
         "operation_type": operation_type,
         "result": result

@@ -20,7 +20,7 @@ from rest_framework import routers
 
 from bio import views
 
-router = routers.DefaultRouter()
+# router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', views.index, name="bio"),
