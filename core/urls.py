@@ -23,6 +23,6 @@ from bio import views
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('bio/', views.index, name="bio"),
-    path('', views.calc, name="calc")
+    path('', views.index, name="bio"),
+    path('calc/', views.calc, name="calc")
 ]
