@@ -31,6 +31,8 @@ def calc(request):
     data = json.loads(request.body)
     operation_type = data["operation_type"].lower()
 
+    KEYWORDS = ['add','subtract','multiply','addition', 'sum','subtraction','multiplication', 'product']
+
     if operation_type == "multiplication":
         result = data['x'] * data['y']
     elif operation_type == "addition":
@@ -38,30 +40,28 @@ def calc(request):
     elif operation_type == "subtraction":
         result = data['x'] - data['y']
     else:
-        response1 = openai.Completion.create(
-            model="text-davinci-002",
-            prompt=f"{operation_type} in one word",
-            temperature=0.3,
-            max_tokens=60,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0
-        ).choices[0].text.strip()
+        operation_type = data['operation_type']
+        operation_type_list = operation_type.split()
+        x = int(data['x'])
+        y = int(data['y'])
 
-        response2 = openai.Completion.create(
-            model="text-davinci-002",
-            prompt=f"{operation_type} operation type in one word",
-            temperature=0.3,
-            max_tokens=60,
-            top_p=1.0,
-            frequency_penalty=0.0,
-            presence_penalty=0.0
-        ).choices[0].text.strip()
+        if any((match := item)  in operation_type_list for item in KEYWORDS):
+            operation = match
+
+            if operation ==  'add' or operation ==  'addition':
+                operation_type = 'addition'
+                result = x + y
+            elif operation ==  'subtract' or operation == 'subtraction':
+                operation_type = 'subtraction'
+                result = x - y
+            elif operation ==  'multiplication' or operation == 'multiply' or operation== 'product':
+                operation_type = 'multiplication'
+                result = x * y
 
         return JsonResponse({
             "slackUsername": "MichaelUtoh",
-            "result": int(response1),
-            "operation_type": response2,
+            "result": operation_type,
+            "operation_type": result,
         })
 
     return JsonResponse({
