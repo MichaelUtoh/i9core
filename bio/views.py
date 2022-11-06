@@ -45,8 +45,8 @@ def calc(request):
         x = int(data['x'])
         y = int(data['y'])
 
-        if any((match := item)  in operation_type_list for item in KEYWORDS):
-            operation = match
+        operation = [item for item in operation_type_list if item in KEYWORDS][0]
+        if operation:
 
             if operation ==  'add' or operation ==  'addition':
                 operation_type = 'addition'
